@@ -19,175 +19,11 @@ public class EmployeeRepository implements EmployeeRepositoryInterface {
 	private String user = "ashok";
 	private String password = "ak";
 	private Login login;
-	private String insertEmployeeSQL = "insert into employee_details values(?,?,?)";
-	private String selectEmployeeSQL = "select * from employee_details";
-	private String selectOneEmployeeSQL = "select * from employee_details where employee_id=?";
-	private String updateEmployeeSalary = "Update employee_details set salary=? where employee_id=?";
-	private String deleteEmployeeSQL = "Delete from employee_details where employee_id =?";
+	
 	private String authenticateSQL = "select * from login_details where login_id=?";
 	private String updateLoginCount = "update login_details set login_count=? where login_id=? ";
 
-	@Override
-	public boolean addNewEmployee(Employee employee) {
-		try {
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-			preparedStatement = connection.prepareStatement(insertEmployeeSQL);
-			preparedStatement.setInt(1, employee.getEmployeeId());
-			preparedStatement.setString(2, employee.getName());
-			preparedStatement.setDouble(3, employee.getSal());
-
-			int rowCount = preparedStatement.executeUpdate();
-			if (rowCount > 0) {
-				return true;
-			} else
-				return false;
-		} catch (ClassNotFoundException e) {
-			System.out.println("Failed to load driver");
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println("Connection Failed!!!");
-			System.out.println(e.getMessage());
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public Employee getEmployeeByEmployeeId(int employeeId) {
-
-		try {
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-			preparedStatement = connection.prepareStatement(selectOneEmployeeSQL);
-			preparedStatement.setInt(1, employeeId);
-			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				int employeeId1 = resultSet.getInt("employee_id");
-				String name = resultSet.getString("name");
-				double salary = resultSet.getDouble("salary");
-				Employee e = new Employee(employeeId1, name, salary);
-				return e;
-			}
-		} catch (ClassNotFoundException e) {
-			System.out.println("Failed to lead driver");
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println("Connection failed");
-			System.out.println(e.getMessage());
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-		return null;
-	}
-
-	@Override
-	public List<Employee> getAllEmployee() {
-		try {
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-			preparedStatement = connection.prepareStatement(selectEmployeeSQL);
-			resultSet = preparedStatement.executeQuery();
-			List<Employee> employeeSet = new LinkedList<Employee>();
-			while (resultSet.next()) {
-				int employeeId = resultSet.getInt("employee_id");
-				String name = resultSet.getString("name");
-				double salary = resultSet.getDouble("salary");
-				Employee e = new Employee(employeeId, name, salary);
-				employeeSet.add(e);
-
-			}
-			return employeeSet;
-		} catch (ClassNotFoundException e) {
-			System.out.println("Failed to lead driver");
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println("Connection failed");
-			System.out.println(e.getMessage());
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-		return null;
-	}
-
-	@Override
-	public Employee updateEmployeeSalary(int employeeId, double newSalary) {
-		try {
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-			preparedStatement = connection.prepareStatement(updateEmployeeSalary);
-			preparedStatement.setInt(2, employeeId);
-			preparedStatement.setDouble(1, newSalary);
-			int rowCount = preparedStatement.executeUpdate();
-			if (rowCount > 0) {
-				return getEmployeeByEmployeeId(employeeId);
-			} else
-				return null;
-		} catch (ClassNotFoundException e) {
-			System.out.println("Failed to lead driver");
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println("Connection failed");
-			System.out.println(e.getMessage());
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-		return null;
-	}
-
-	@Override
-	public boolean deleteEmployeeById(int employeeId) {
-		try {
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-			preparedStatement = connection.prepareStatement(deleteEmployeeSQL);
-			preparedStatement.setInt(1, employeeId);
-			int rowCount = preparedStatement.executeUpdate();
-			if (rowCount > 0) {
-				return true;
-			} else
-				return false;
-		} catch (ClassNotFoundException e) {
-			System.out.println("Failed to lead driver");
-			System.out.println(e.getMessage());
-		} catch (SQLException e) {
-			System.out.println("Connection failed");
-			System.out.println(e.getMessage());
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-		return false;
-	}
+	
 
 	@Override
 	public Login authenticateLogin(String userName, String password1) {
@@ -251,10 +87,6 @@ public class EmployeeRepository implements EmployeeRepositoryInterface {
 		return null;
 	}
 
-	@Override
-	public Employee updateEmployeeName(int employeeId, String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }
